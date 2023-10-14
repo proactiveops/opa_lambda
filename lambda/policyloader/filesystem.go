@@ -16,7 +16,7 @@ func (p *FilesystemPolicyLoader) LoadPolicy(ctx context.Context, key string) (st
 		return "", err
 	}
 
-	rawBytes, err := os.ReadFile(filename)
+	rawBytes, err := os.ReadFile(filename) // #nosec G304 Input is validated and sanitized before being used here.
 	if err != nil {
 		return "", &FileNotFoundError{Key: key}
 	}
