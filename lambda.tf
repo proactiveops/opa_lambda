@@ -68,7 +68,7 @@ resource "aws_iam_role_policy_attachment" "xray" {
 resource "null_resource" "build_lambda" {
   provisioner "local-exec" {
     working_dir = "lambda"
-    command     = "GOOS=linux GOARCH=amd64 go build -o opa_lambda ."
+    command     = "GOARCH=${var.architecture} GOOS=linux go build -o bootstrap main.go"
   }
 
   triggers = {
@@ -79,16 +79,17 @@ resource "null_resource" "build_lambda" {
 data "archive_file" "lambda_zip" {
   depends_on  = [null_resource.build_lambda]
   type        = "zip"
-  source_file = "${path.module}/lambda/opa_lambda"
-  output_path = "lambda.zip"
+  source_file = "${path.module}/lambda/bootstrap"
+  output_path = "lambda/lambda.zip"
 }
 
 # tfsec:ignore:aws-lambda-enable-tracing Tracing is optional.
 resource "aws_lambda_function" "this" {
   function_name = local.function_name
-  handler       = "opa_lambda"
+  handler       = "bootstrap"
   role          = aws_iam_role.lambda_role.arn
-  runtime       = "go1.x"
+  runtime       = "provided.al2"
+  architectures = [var.architecture == "arm64" ? var.architecture : "x86_64"]
 
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
