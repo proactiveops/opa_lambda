@@ -31,9 +31,11 @@ jobs:
       - name: Build
         id: build
         working-directory: lambda
-        run: go build -v ./...
+        run: GOARCH=$([ "$RUNNER_ARCH" = "ARM64" ] && echo "arm64" || echo "amd64") go build -tags lambda.norpc -o bootstrap main.go
+        env:
+          GOOS: linux
 
-      - name: Test with the Go CLI
+      - name: Go test
         id: test
         working-directory: lambda
         run: go test ./... -cover

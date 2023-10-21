@@ -1,3 +1,14 @@
+variable "architecture" {
+  description = "The architecture of the Lambda function."
+  type        = string
+  default     = "arm64"
+
+  validation {
+    condition     = contains(["amd64", "arm64"], var.architecture)
+    error_message = "Architecture must be either amd64 or arm64."
+  }
+}
+
 variable "enable_tracing" {
   description = "Enable AWS X-Ray tracing."
   type        = bool
