@@ -6,7 +6,7 @@ toolchain go1.24.1
 require (
 	github.com/aws/aws-lambda-go v1.47.0
 	github.com/aws/aws-sdk-go v1.55.6
-	github.com/open-policy-agent/opa v1.3.0
+	github.com/open-policy-agent/opa v1.4.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.10.0
 )
@@ -41,7 +41,7 @@ require (
 	go.opentelemetry.io/otel/sdk v1.35.0 // indirect
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
-	google.golang.org/protobuf v1.36.5 // indirect
+	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
