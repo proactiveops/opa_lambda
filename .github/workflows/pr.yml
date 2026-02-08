@@ -66,11 +66,20 @@ jobs:
         id: validate
         run: terraform validate
 
-      - name: tfsec
-        id: tfsec
-        uses: aquasecurity/tfsec-action@b466648d6e39e7c75324f25d83891162a721f2d6 # v1.0.3
+      - name: Trivy Scan Config
+        id: trivy-config
+        uses: aquasecurity/trivy-action@0.33.1
         with:
-          github_token: ${{ github.token }}
+          scan-type: 'config'
+          scan-ref: '.'
+
+      - name: Trivy Scan Filesystem
+        id: trivy-fs
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          skip-setup-trivy: true
 
       - name: Setup TFLint
         id: tflint-setup
