@@ -65,22 +65,26 @@ resource "aws_iam_role_policy_attachment" "xray" {
   role       = aws_iam_role.lambda_role.name
 }
 
-resource "null_resource" "build_lambda" {
+resource "terraform_data" "build_lambda" {
   provisioner "local-exec" {
     working_dir = "lambda"
     command     = "GOARCH=${var.architecture} GOOS=linux go build -o bootstrap main.go"
   }
 
-  triggers = {
+  triggers_replace = {
     always_run = timestamp()
   }
 }
 
 data "archive_file" "lambda_zip" {
-  depends_on  = [null_resource.build_lambda]
-  type        = "zip"
-  source_file = "${path.module}/lambda/bootstrap"
   output_path = "lambda/lambda.zip"
+  source_file = "${path.module}/lambda/bootstrap"
+
+  type = "zip"
+
+  depends_on = [
+    terraform_data.build_lambda
+  ]
 }
 
 # tfsec:ignore:aws-lambda-enable-tracing Tracing is optional.

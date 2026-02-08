@@ -3,7 +3,7 @@ data "aws_s3_bucket" "this" {
   bucket = var.s3_bucket
 }
 
-# tfsec:ignore:aws-s3-enable-bucket-logging We support bring your own bucket (BYOB) if access logging is needed.
+# trivy:ignore:AVD-AWS-0089 We support bring your own bucket (BYOB) if access logging is needed.
 resource "aws_s3_bucket" "this" {
   count  = local.create_bucket ? 1 : 0
   bucket = "${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}-${local.function_name}"

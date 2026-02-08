@@ -10,18 +10,18 @@ on:
 
 jobs:
   golang:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Go
         id: setup
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v6
         with:
-          go-version: '1.21.x'
+          go-version-file: 'lambda/go.mod'
 
       - name: Install dependencies
         id: deps
@@ -41,18 +41,16 @@ jobs:
         run: go test ./... -cover
   
   terraform:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Terraform
         id: setup
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: '1.5.7'
+        uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Format
         id: format
@@ -66,17 +64,26 @@ jobs:
         id: validate
         run: terraform validate
 
-      - name: tfsec
-        id: tfsec
-        uses: aquasecurity/tfsec-action@b466648d6e39e7c75324f25d83891162a721f2d6 # v1.0.3
+      - name: Trivy Scan Config
+        id: trivy-config
+        uses: aquasecurity/trivy-action@0.33.1
         with:
-          github_token: ${{ github.token }}
+          scan-type: 'config'
+          scan-ref: '.'
+
+      - name: Trivy Scan Filesystem
+        id: trivy-fs
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          skip-setup-trivy: true
 
       - name: Setup TFLint
         id: tflint-setup
-        uses: terraform-linters/setup-tflint@19a52fbac37dacb22a09518e4ef6ee234f2d4987 # v4.0.0
+        uses: terraform-linters/setup-tflint@v6.2.1
         with:
-          tflint_version: v0.48.0
+          tflint_version: 'latest'
 
       - name: Init TFLint
         id: tflint-init
