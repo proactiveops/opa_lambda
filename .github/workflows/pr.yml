@@ -66,14 +66,14 @@ jobs:
 
       - name: Trivy Scan Config
         id: trivy-config
-        uses: aquasecurity/trivy-action@0.34.0
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           scan-type: 'config'
           scan-ref: '.'
 
       - name: Trivy Scan Filesystem
         id: trivy-fs
-        uses: aquasecurity/trivy-action@0.34.0
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           scan-type: 'fs'
           scan-ref: '.'
