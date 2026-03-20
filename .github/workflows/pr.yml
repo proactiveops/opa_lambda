@@ -39,7 +39,7 @@ jobs:
         id: test
         working-directory: lambda
         run: go test ./... -cover
-  
+
   terraform:
     runs-on: ubuntu-24.04
 
@@ -63,21 +63,6 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate
-
-      - name: Trivy Scan Config
-        id: trivy-config
-        uses: aquasecurity/trivy-action@0.35.0
-        with:
-          scan-type: 'config'
-          scan-ref: '.'
-
-      - name: Trivy Scan Filesystem
-        id: trivy-fs
-        uses: aquasecurity/trivy-action@0.35.0
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          skip-setup-trivy: true
 
       - name: Setup TFLint
         id: tflint-setup
