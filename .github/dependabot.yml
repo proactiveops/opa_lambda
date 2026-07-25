@@ -4,11 +4,17 @@ updates:
     directory: /
     schedule:
       interval: daily
+    cooldown:
+      default-days: 1
   - package-ecosystem: gomod
     directory: lambda
     schedule:
       interval: daily
+    cooldown:
+      default-days: 1
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: daily
+    cooldown:
+      default-days: 1
