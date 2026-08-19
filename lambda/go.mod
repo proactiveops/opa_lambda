@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/aws/aws-lambda-go v1.54.0
 	github.com/aws/aws-sdk-go v1.55.8
-	github.com/open-policy-agent/opa v1.19.0
+	github.com/open-policy-agent/opa v1.19.1
 	github.com/sirupsen/logrus v1.10.0
 	github.com/stretchr/testify v1.12.0
 )
