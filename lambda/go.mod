@@ -3,7 +3,7 @@ module opa_lambda
 go 1.26.0
 
 require (
-	github.com/aws/aws-lambda-go v1.54.0
+	github.com/aws/aws-lambda-go v1.55.0
 	github.com/aws/aws-sdk-go v1.55.8
 	github.com/open-policy-agent/opa v1.20.2
 	github.com/sirupsen/logrus v1.10.2
